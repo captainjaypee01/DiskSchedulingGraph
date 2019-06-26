@@ -1,0 +1,9 @@
+C:\Users\jopdal\source\repos\DiskSchedulingGraph\DiskSchedulingGraph\bin\Debug\DiskSchedulingGraph.exe.config
+C:\Users\jopdal\source\repos\DiskSchedulingGraph\DiskSchedulingGraph\bin\Debug\DiskSchedulingGraph.exe
+C:\Users\jopdal\source\repos\DiskSchedulingGraph\DiskSchedulingGraph\bin\Debug\DiskSchedulingGraph.pdb
+C:\Users\jopdal\source\repos\DiskSchedulingGraph\DiskSchedulingGraph\obj\Debug\DiskSchedulingGraph.Form1.resources
+C:\Users\jopdal\source\repos\DiskSchedulingGraph\DiskSchedulingGraph\obj\Debug\DiskSchedulingGraph.Properties.Resources.resources
+C:\Users\jopdal\source\repos\DiskSchedulingGraph\DiskSchedulingGraph\obj\Debug\DiskSchedulingGraph.csproj.GenerateResource.cache
+C:\Users\jopdal\source\repos\DiskSchedulingGraph\DiskSchedulingGraph\obj\Debug\DiskSchedulingGraph.csproj.CoreCompileInputs.cache
+C:\Users\jopdal\source\repos\DiskSchedulingGraph\DiskSchedulingGraph\obj\Debug\DiskSchedulingGraph.exe
+C:\Users\jopdal\source\repos\DiskSchedulingGraph\DiskSchedulingGraph\obj\Debug\DiskSchedulingGraph.pdb
