@@ -133,10 +133,14 @@
             this.cb_diskSchedule.Items.AddRange(new object[] {
             "FCFS",
             "SSTF",
-            "SCAN",
-            "C-SCAN",
-            "LOOK",
-            "C-LOOK"});
+            "SCAN(UP)",
+            "SCAN(DOWN)",
+            "C-SCAN(UP)",
+            "C-SCAN(DOWN)",
+            "LOOK(UP)",
+            "LOOK(DOWN)",
+            "C-LOOK(UP)",
+            "C-LOOK(DOWN)"});
             this.cb_diskSchedule.Location = new System.Drawing.Point(169, 25);
             this.cb_diskSchedule.Name = "cb_diskSchedule";
             this.cb_diskSchedule.Size = new System.Drawing.Size(100, 21);

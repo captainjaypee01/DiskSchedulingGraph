@@ -99,21 +99,37 @@ namespace DiskSchedulingGraph
                 {
                     sstf(tracks, headMovement, 8);
                 }
-                else if (diskSchedule.ToUpper().Trim().Equals("SCAN"))
+                else if (diskSchedule.ToUpper().Trim().Equals("SCAN(UP)"))
                 {
-                    scan(tracks, headMovement, 8);
+                    scanup(tracks, headMovement, 8);
                 }
-                else if (diskSchedule.ToUpper().Trim().Equals("C-SCAN"))
+                else if (diskSchedule.ToUpper().Trim().Equals("SCAN(DOWN)"))
                 {
-                    cscan(tracks, headMovement, 8);
+                    scandown(tracks, headMovement, 8);
                 }
-                else if (diskSchedule.ToUpper().Trim().Equals("LOOK"))
+                else if (diskSchedule.ToUpper().Trim().Equals("C-SCAN(UP)"))
                 {
-                    look(tracks, headMovement, 8);
+                    cscanup(tracks, headMovement, 8);
                 }
-                else if (diskSchedule.ToUpper().Trim().Equals("C-LOOK"))
+                else if (diskSchedule.ToUpper().Trim().Equals("C-SCAN(DOWN)"))
                 {
-                    clook(tracks, headMovement, 8);
+                    cscandown(tracks, headMovement, 8);
+                }
+                else if (diskSchedule.ToUpper().Trim().Equals("LOOK(UP)"))
+                {
+                    lookup(tracks, headMovement, 8);
+                }
+                else if (diskSchedule.ToUpper().Trim().Equals("LOOK(DOWN)"))
+                {
+                    lookdown(tracks, headMovement, 8);
+                }
+                else if (diskSchedule.ToUpper().Trim().Equals("C-LOOK(UP)"))
+                {
+                    clookup(tracks, headMovement, 8);
+                }
+                else if (diskSchedule.ToUpper().Trim().Equals("C-LOOK(DOWN)"))
+                {
+                    clookdown(tracks, headMovement, 8);
                 }
                  
             } 
@@ -163,7 +179,7 @@ namespace DiskSchedulingGraph
 
         }
 
-        public void scan(int[] d, int disk, int n)
+        public void scandown(int[] d, int disk, int n)
         {
             Console.WriteLine("\nSHOW SCAN");
             int i, j, sum = 0;
@@ -221,15 +237,11 @@ namespace DiskSchedulingGraph
             this.txt_totalHead.Text = sum.ToString();
             generateChart(printArr, disk, n+1);
         }
-
-        public void cscan(int[] d, int disk, int n)
+        public void scanup(int[] d, int disk, int n)
         {
-
-            Console.WriteLine("\nSHOW C-SCAN");
-            // Initialization 
-             
+            Console.WriteLine("\nSHOW SCAN");
             int i, j, sum = 0;
-            int temp, min = 0, max=200;
+            int temp, min = 0;
             int dloc;   //loc of disk in array 
             int[] printArr = new int[20];
             d[n] = disk;
@@ -245,7 +257,56 @@ namespace DiskSchedulingGraph
                         d[j] = temp;
                     }
                 }
+            } 
+            dloc = 0;
+            for (i = 0; i < n; i++)   // to find loc of disc in array
+            {
+                if (disk == d[i]) { dloc = i; break; }
             }
+
+            int ctr = 0;
+            for (i = dloc-1; i < n; i++)
+            {
+
+                printArr[ctr] = d[i+1];
+                if (i == (n - 1)) break;
+                if (i == dloc)
+                    sum += (d[i + 1] - 0);
+                else
+                {
+                    if (d[i] > d[i - 1])
+                        sum += (d[i + 1] - d[i]);
+                    else
+                        sum += (d[i] - d[i - 1]);
+                }
+                if (i != n - 2 || i != dloc) Console.Write(" --> ");
+                ctr++;
+            }
+            for (i = dloc-1; i >= 0; i--)
+            {
+                if (i != 0)
+                    sum += (d[i] - d[i - 1]);
+                else sum += d[i];
+                printArr[ctr] = d[i];
+                ctr++;
+            }
+            printArr[ctr++] = min;
+            Console.WriteLine("\nTotal Head Movements: " + sum);
+            this.txt_totalHead.Text = sum.ToString();
+            generateChart(printArr, disk, n + 1);
+        }
+
+        public void cscanup(int[] d, int disk, int n)
+        {
+
+            Console.WriteLine("\nSHOW C-SCAN");
+            // Initialization 
+             
+            int i, j, sum = 0;
+            int temp, min = 0, max=200;
+            int dloc;   //loc of disk in array 
+            int[] printArr = new int[20];
+
             d[n] = disk;
             n = n + 1;
             for (i = 0; i < n; i++)    // sorting disk locations
@@ -320,7 +381,87 @@ namespace DiskSchedulingGraph
 
         }
 
-        public void look(int[] d, int disk, int n)
+        public void cscandown(int[] d, int disk, int n)
+        {
+            Console.WriteLine("\nSHOW C-SCAN");
+            // Initialization 
+
+            int i, j, sum = 0;
+            int temp, min = 0, max = 200;
+            int dloc;   //loc of disk in array 
+            int[] printArr = new int[20];
+
+            d[n] = disk;
+            n = n + 1;
+            for (i = 0; i < n; i++)    // sorting disk locations
+            {
+                for (j = i; j < n; j++)
+                {
+                    if (d[i] > d[j])
+                    {
+                        temp = d[i];
+                        d[i] = d[j];
+                        d[j] = temp;
+                    }
+                }
+            }
+            dloc = 0;
+            for (i = 0; i < n; i++)   // to find loc of disc in array
+            {
+                if (disk == d[i]) { dloc = i; break; }
+            }
+            Console.WriteLine("===");
+            Console.WriteLine("Movements");
+            int ctr = 0;
+
+            for (i = dloc; i > 0; i--)
+            {
+                 
+                sum += Math.Abs(d[i] - d[i - 1]);
+                Console.Write(d[i - 1]);
+                if (i != (dloc - 2))
+                    Console.Write("-|");
+
+                printArr[ctr] = d[i];
+
+                if (i - 1 == 0)
+                {
+                    sum += Math.Abs(d[i - 1] - min);
+
+                    Console.Write(d[i - 1] + "-=");
+                    printArr[ctr] = d[i - 1];
+                    ctr++;
+                } 
+                ctr++;
+            }
+            sum += max;
+            Console.WriteLine("\n" + sum);
+            printArr[ctr++] = max;
+            for (i = n-1; i > dloc; i--)
+            {
+
+                if (i != (n - 1))
+                {
+                    sum += Math.Abs(d[i + 1] - d[i]);
+
+                    Console.Write(sum + "-");
+                }
+                if (i == (n - 1))
+                {
+                    sum += (max - d[i]);
+                    Console.Write(sum + "-");
+                }
+
+                printArr[ctr] = d[i];
+                if (i != (n - 1))
+                    ctr++;
+            }
+
+            Console.WriteLine("\nTotal Head Movement: " + sum);
+            this.txt_totalHead.Text = sum.ToString();
+            generateChart(printArr, disk, n);
+        }
+        public void lookup(int[] d, int disk, int n)
         {
 
             Console.WriteLine("\nSHOW LOOK");
@@ -376,8 +517,67 @@ namespace DiskSchedulingGraph
             this.txt_totalHead.Text = sum.ToString();
             generateChart(printArr, disk, n);
         }
+        public void lookdown(int[] d, int disk, int n)
+        {
 
-        public void clook(int[] d, int disk, int n)
+            Console.WriteLine("\nSHOW LOOK");
+            // Initialization 
+            int i, j, sum = 0, min = 0;
+            int temp, max = 200;
+            int dloc;   //loc of disk in array
+            int[] printArr = new int[20];
+
+            d[n] = disk;
+            n = n + 1;
+            for (i = 0; i < n; i++)    // sorting disk locations
+            {
+                for (j = i; j < n; j++)
+                {
+                    if (d[i] > d[j])
+                    {
+                        temp = d[i];
+                        d[i] = d[j];
+                        d[j] = temp;
+                    }
+                }
+            }
+            dloc = 0;
+            for (i = 0; i < n; i++)   // to find loc of disc in array
+            {
+                if (disk == d[i]) { dloc = i; break; }
+            }
+            int ctr = 0;
+
+            for (i = dloc; i >= 0; i--)
+            {
+                 
+                Console.Write(d[i] + "-");
+                printArr[ctr++] = d[i];
+                if (i == 0) break;
+                else
+                    sum += Math.Abs(d[i] - d[i - 1]); 
+
+            }
+             
+            Console.WriteLine("\n" + sum); 
+            for (i = dloc; i < n; i++)
+            {
+
+                if (i == dloc) sum += Math.Abs(d[i] - d[0]);
+                else
+                {
+                    sum += Math.Abs(d[i] - d[i - 1]);
+                    printArr[ctr++] = d[i];
+                    Console.Write(sum + "-");
+                }
+            }
+
+            Console.WriteLine("\nTotal Head Movement: " + sum);
+            this.txt_totalHead.Text = sum.ToString();
+            generateChart(printArr, disk, n);
+        }
+
+        public void clookup(int[] d, int disk, int n)
         {
 
             Console.WriteLine("\nSHOW C-LOOK");
@@ -436,7 +636,73 @@ namespace DiskSchedulingGraph
             this.txt_totalHead.Text = sum.ToString();
             generateChart(printArr, disk, n);
         }
+        public void clookdown(int[] d, int disk, int n)
+        {
 
+            Console.WriteLine("\nSHOW C-LOOK");
+            // Initialization 
+            int i, j, sum = 0, min = 0;
+            int temp, max = 200;
+            int[] printArr = new int[20];
+            int dloc;   //loc of disk in array
+
+            d[n] = disk;
+            n = n + 1;
+            for (i = 0; i < n; i++)    // sorting disk locations
+            {
+                for (j = i; j < n; j++)
+                {
+                    if (d[i] > d[j])
+                    {
+                        temp = d[i];
+                        d[i] = d[j];
+                        d[j] = temp;
+                    }
+                }
+            }
+            dloc = 0;
+            for (i = 0; i < n; i++)   // to find loc of disc in array
+            {
+                if (disk == d[i]) { dloc = i; break; }
+            }
+            int ctr = 0;
+
+            for (i = dloc; i >= 0; i--)
+            {
+
+                printArr[ctr++] = d[i];
+                if (i == 0) break;
+                else
+                    sum += Math.Abs(d[i] - d[i - 1]);
+
+                Console.Write(sum + "-");
+                
+            }
+
+            Console.WriteLine("\n" + sum + "-");
+            for (i = n; i > dloc; i--)
+            {
+                if (i == n)
+                {
+                    sum += Math.Abs(d[n - 1] - d[0]);
+                    Console.WriteLine("\n" + sum + "-");
+                }
+                else
+                {
+                    sum += Math.Abs(d[i] - d[i - 1]);
+                    Console.Write(d[i] + "-");
+                    printArr[ctr++] = d[i];
+                }
+            } 
+
+            for (int k = 0; k < n; k++)
+            {
+                Console.Write(printArr[k] + "=>");
+            }
+            Console.WriteLine("\nTotal Head Movement: " + sum);
+            this.txt_totalHead.Text = sum.ToString();
+            generateChart(printArr, disk, n);
+        }
         // Calculates difference of each  
         // track number with the head position 
         public static void calculateDifference(int[] queue,
@@ -555,14 +821,15 @@ namespace DiskSchedulingGraph
             this.chartDisk.Series["tracks"].MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Triangle;
             this.chartDisk.Series["tracks"].MarkerSize = 16;
             this.chartDisk.Series["tracks"].MarkerColor = Color.Black;
-            if( (this.schedule.Trim().ToUpper().Equals("FCFS")  ) )
+
+            if ((this.schedule.Trim().ToUpper().Equals("FCFS")))
                 this.chartDisk.Series["tracks"].Points.AddXY("HEAD", disk);
 
 
             for (int i = 0; i < n; i++)
             {
                 string labelTrack = "Track ";
-                if ( (this.schedule.Trim().ToUpper().Equals("FCFS")) && i == 0 )
+                if ( !(this.schedule.Trim().ToUpper().Equals("FCFS")) && i == 0 )
                     this.chartDisk.Series["tracks"].Points.AddXY("HEAD", tracks[i]);
                 else
                     this.chartDisk.Series["tracks"].Points.AddXY(labelTrack, tracks[i]);
